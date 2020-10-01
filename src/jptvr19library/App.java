@@ -5,6 +5,8 @@
  */
 package jptvr19library;
 
+import entity.Book;
+import entity.Reader;
 import java.util.Scanner;
 
 /**
@@ -34,12 +36,22 @@ class App {
                     break;
                 case "1":
                     System.out.println("--- Добавить новую книгу ---");
+                    Book book = new Book("Voina i mir", "L.Tolstoy", 2010, "123-1234");
+                    System.out.println("Название книги: "+book.getName());
+                    System.out.println(book.toString());
                     break;
                 case "2":
                     System.out.println("--- Список книг ---");
                     break;
                 case "3":
                     System.out.println("--- Зарегистрировать читателя ---");
+                    Reader reader = new Reader("Ivan", "Ivanov", "56565656");
+                    System.out.println("Имя читателя: "
+                            +reader.getName()
+                            +" "
+                            + reader.getLastname()
+                    );
+                    System.out.println(reader.toString());
                     break;
                 case "4":
                     System.out.println("--- Список читателей ---");
