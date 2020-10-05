@@ -8,12 +8,14 @@ package jptvr19library;
 import entity.Book;
 import entity.Reader;
 import java.util.Scanner;
+import tools.CreatorBook;
 
 /**
  *
  * @author Melnikov
  */
 class App {
+    private Book[] books = new Book[10];
     public void run(){
         boolean repeat = true;
         System.out.println("--- Библиотека ---");
@@ -36,18 +38,31 @@ class App {
                     break;
                 case "1":
                     System.out.println("--- Добавить новую книгу ---");
-                    Book book = new Book("Voina i mir", "L.Tolstoy", 2010, "123-1234");
-                    System.out.println("Название книги: "+book.getName());
-                    System.out.println(book.toString());
+//                    Book book = new Book("Voina i mir", "L.Tolstoy", 2010, "123-1234");
+                    CreatorBook creatorBook = new CreatorBook();
+                    Book book = creatorBook.getBook();
+                    for (int i = 0; i < books.length; i++) {
+                        if(books[i] == null){
+                            books[i] = book;
+                            break;
+                        }
+                    }
+                    System.out.println("Создана книга: "+book.getName());
+                    //System.out.println(book.toString());
                     break;
                 case "2":
                     System.out.println("--- Список книг ---");
+                    for (int i = 0; i < books.length; i++) {
+                        if(books[i] != null){
+                            System.out.println(i+1+". " + books[i].toString());
+                        }
+                    }
                     break;
                 case "3":
                     System.out.println("--- Зарегистрировать читателя ---");
                     Reader reader = new Reader("Ivan", "Ivanov", "56565656");
                     System.out.println("Имя читателя: "
-                            +reader.getName()
+                            +reader.getFirstname()
                             +" "
                             + reader.getLastname()
                     );
