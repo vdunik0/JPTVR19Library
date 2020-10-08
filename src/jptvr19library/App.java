@@ -5,6 +5,8 @@
  */
 package jptvr19library;
 
+import tools.BookSaver;
+import tools.CreatorReader;
 import entity.Book;
 import entity.Reader;
 import java.util.Scanner;
@@ -16,6 +18,13 @@ import tools.CreatorBook;
  */
 class App {
     private Book[] books = new Book[10];
+    private Reader[] readers = new Reader[10];
+
+    public App() {
+        BookSaver bookSaver = new BookSaver();
+        books = bookSaver.loadBooks();
+    }
+    
     public void run(){
         boolean repeat = true;
         System.out.println("--- Библиотека ---");
@@ -47,6 +56,8 @@ class App {
                             break;
                         }
                     }
+                    BookSaver bookSaver = new BookSaver();
+                    bookSaver.saveBooks(books);
                     System.out.println("Создана книга: "+book.getName());
                     //System.out.println(book.toString());
                     break;
@@ -60,7 +71,8 @@ class App {
                     break;
                 case "3":
                     System.out.println("--- Зарегистрировать читателя ---");
-                    Reader reader = new Reader("Ivan", "Ivanov", "56565656");
+                    CreatorReader creatorReader = new CreatorReader();
+                    Reader reader = creatorReader.getReader();
                     System.out.println("Имя читателя: "
                             +reader.getFirstname()
                             +" "
