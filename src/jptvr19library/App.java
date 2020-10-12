@@ -5,12 +5,16 @@
  */
 package jptvr19library;
 
-import tools.BookSaver;
-import tools.CreatorReader;
+import tools.savers.HistorySaver;
+import tools.creators.LibraryManager;
+import tools.savers.BookSaver;
+import tools.creators.CreatorReader;
 import entity.Book;
+import entity.History;
 import entity.Reader;
 import java.util.Scanner;
-import tools.CreatorBook;
+import tools.creators.CreatorBook;
+import tools.savers.ReaderSaver;
 
 /**
  *
@@ -19,10 +23,15 @@ import tools.CreatorBook;
 class App {
     private Book[] books = new Book[10];
     private Reader[] readers = new Reader[10];
+    private History[] histories = new History[10];
 
     public App() {
         BookSaver bookSaver = new BookSaver();
         books = bookSaver.loadBooks();
+        ReaderSaver readerSaver = new ReaderSaver();
+        readers = readerSaver.loadReaders();
+        HistorySaver historySaver = new HistorySaver();
+        histories = historySaver.loadHistories();
     }
     
     public void run(){
@@ -37,6 +46,7 @@ class App {
             System.out.println("4. Список читателей");
             System.out.println("5. Выдать книгу читателю");
             System.out.println("6. Вернуть книгу в библиотеку");
+            System.out.println("7. Список выданных книг");
             System.out.print("Выберите задачу: ");
             Scanner scanner = new Scanner(System.in);
             String task = scanner.nextLine();
@@ -47,7 +57,6 @@ class App {
                     break;
                 case "1":
                     System.out.println("--- Добавить новую книгу ---");
-//                    Book book = new Book("Voina i mir", "L.Tolstoy", 2010, "123-1234");
                     CreatorBook creatorBook = new CreatorBook();
                     Book book = creatorBook.getBook();
                     for (int i = 0; i < books.length; i++) {
@@ -78,16 +87,55 @@ class App {
                             +" "
                             + reader.getLastname()
                     );
-                    System.out.println(reader.toString());
+                    for (int i = 0; i < readers.length; i++) {
+                        if(readers[i] == null){
+                            readers[i] = reader;
+                            break;
+                        }
+                    }
+                    ReaderSaver readerSaver = new ReaderSaver();
+                    readerSaver.saveReaders(readers);
                     break;
                 case "4":
                     System.out.println("--- Список читателей ---");
+                    for (int i = 0; i < readers.length; i++) {
+                        if(readers[i] != null){
+                            System.out.println(i+1+". " + readers[i].toString());
+                        }
+                    }
                     break;
                 case "5":
                     System.out.println("--- Выдать книгу читателю ---");
+                    LibraryManager libraryManager = new LibraryManager();
+                    History history = libraryManager.takeOnBook(books, readers);
+                    for (int i = 0; i < histories.length; i++) {
+                        if (histories[i] == null) {
+                            histories[i] = history;
+                            break;
+                        }
+                    }
+                    HistorySaver historySaver = new HistorySaver();
+                    historySaver.saveHistories(histories);
                     break;
                 case "6":
                     System.out.println("--- Вернуть книгу в библиотеку ---");
+                    libraryManager = new LibraryManager();
+                    libraryManager.returnBook(histories);
+                    historySaver = new HistorySaver();
+                    historySaver.saveHistories(histories);
+                    break;
+                case "7":
+                    System.out.println("--- Список выданных книг ---");
+                    for (int i = 0; i < histories.length; i++) {
+                        if(histories[i] != null && histories[i].getReturnDate()==null){
+                            System.out.printf("%d. Книгу \"%s\" читает %s %s%n" 
+                                    ,i+1
+                                    ,histories[i].getBook().getName()
+                                    ,histories[i].getReader().getFirstname()
+                                    ,histories[i].getReader().getLastname()
+                            );
+                        }
+                    }
                     break;
                 default:
                     System.out.println("Нет такой задачи.");

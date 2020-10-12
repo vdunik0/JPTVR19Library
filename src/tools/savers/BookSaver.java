@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tools;
+package tools.savers;
 
 import entity.Book;
 import java.io.FileInputStream;
@@ -12,8 +12,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 /**
  *
@@ -37,7 +36,7 @@ public class BookSaver {
     }
 
     public Book[] loadBooks() {
-        Book[] books = null;
+        Book[] books = new Book[10];
         FileInputStream fis = null;
         ObjectInputStream ois = null;
         try {
