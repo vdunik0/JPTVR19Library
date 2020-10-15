@@ -12,9 +12,9 @@ import java.util.Scanner;
  *
  * @author Melnikov
  */
-public class CreatorReader {
+public class ReaderManager {
     private Scanner scanner = new Scanner(System.in);
-    public Reader getReader() {
+    public Reader createReader() {
         Reader reader = new Reader();
         System.out.println("--- Регистрация нового пользователя ---");
         System.out.print("Введите имя: ");
@@ -23,7 +23,33 @@ public class CreatorReader {
         reader.setLastname(scanner.nextLine());
         System.out.print("Введите телефон: ");
         reader.setPhone(scanner.nextLine());
+        this.printReader(reader);
         return reader;
+    }
+
+    public void addReaderToArray(Reader reader, Reader[] readers) {
+        for (int i = 0; i < readers.length; i++) {
+            if(readers[i] == null){
+                readers[i] = reader;
+                break;
+            }
+        }
+    }
+
+    public void printReader(Reader reader) {
+        System.out.println("Имя читателя: "
+                +reader.getFirstname()
+                +" "
+                + reader.getLastname()
+        );
+    }
+
+    public void printListReaders(Reader[] readers) {
+        for (int i = 0; i < readers.length; i++) {
+            if(readers[i] != null){
+                System.out.println(i+1+". " + readers[i].toString());
+            }
+        }
     }
     
 }
