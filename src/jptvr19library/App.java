@@ -12,7 +12,9 @@ import tools.creators.ReaderManager;
 import entity.Book;
 import entity.History;
 import entity.Reader;
+import entity.User;
 import java.util.Scanner;
+import security.SecureManager;
 import tools.creators.BookManager;
 import tools.savers.ReaderSaver;
 
@@ -24,6 +26,7 @@ class App {
     private Book[] books = new Book[10];
     private Reader[] readers = new Reader[10];
     private History[] histories = new History[10];
+    private User[] users = new User[10];
     private BookManager bookManager = new BookManager();
     private ReaderManager readerManager = new ReaderManager();
     private LibraryManager libraryManager = new LibraryManager();
@@ -31,6 +34,8 @@ class App {
     private ReaderSaver readerSaver = new ReaderSaver();
     private HistorySaver historySaver = new HistorySaver();
 
+    private User loginedUser;
+    
     public App() {
         books = bookSaver.loadBooks();
         readers = readerSaver.loadReaders();
@@ -40,6 +45,7 @@ class App {
     public void run(){
         boolean repeat = true;
         System.out.println("--- Библиотека ---");
+        this.loginedUser = SecureManager.checkTask(users,readers);
         do{
             System.out.println("Задачи: ");
             System.out.println("0. Выйти из программы");
