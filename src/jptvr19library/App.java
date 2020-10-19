@@ -17,6 +17,7 @@ import java.util.Scanner;
 import security.SecureManager;
 import tools.creators.BookManager;
 import tools.savers.ReaderSaver;
+import tools.savers.UserSaver;
 
 /**
  *
@@ -33,6 +34,8 @@ class App {
     private BookSaver bookSaver = new BookSaver();
     private ReaderSaver readerSaver = new ReaderSaver();
     private HistorySaver historySaver = new HistorySaver();
+    private SecureManager secureManager = new SecureManager();
+    private UserSaver userSaver = new UserSaver();
 
     private User loginedUser;
     
@@ -40,12 +43,13 @@ class App {
         books = bookSaver.loadBooks();
         readers = readerSaver.loadReaders();
         histories = historySaver.loadHistories();
+        users = userSaver.loadUsers();
     }
     
     public void run(){
         boolean repeat = true;
         System.out.println("--- Библиотека ---");
-        this.loginedUser = SecureManager.checkTask(users,readers);
+        this.loginedUser = secureManager.checkTask(users,readers);
         do{
             System.out.println("Задачи: ");
             System.out.println("0. Выйти из программы");
