@@ -30,9 +30,7 @@ public class App {
     private Reader[] readers = new Reader[10];
     private History[] histories = new History[10];
     private User[] users = new User[10];
-    private BookManager bookManager = new BookManager();
-    private ReaderManager readerManager = new ReaderManager();
-    private LibraryManager libraryManager = new LibraryManager();
+   
     private BookSaver bookSaver = new BookSaver();
     private ReaderSaver readerSaver = new ReaderSaver();
     private HistorySaver historySaver = new HistorySaver();

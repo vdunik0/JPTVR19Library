@@ -10,7 +10,6 @@ import entity.History;
 import entity.Reader;
 import entity.User;
 import java.util.Scanner;
-import jptvr19library.App;
 import security.SecureManager;
 import tools.creators.BookManager;
 import tools.creators.LibraryManager;
