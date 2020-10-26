@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 /**
  *
- * @author Melnikov
+ * @author pupil
  */
 public class UserManager {
         private Scanner scanner = new Scanner(System.in);

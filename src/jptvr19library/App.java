@@ -23,7 +23,7 @@ import ui.ReaderUI;
 
 /**
  *
- * @author Melnikov
+ * @author pupil
  */
 public class App {
     private Book[] books = new Book[10];

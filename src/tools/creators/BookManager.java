@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 /**
  *
- * @author Melnikov
+ * @author pupil
  */
 public class BookManager {
         private Scanner scanner = new Scanner(System.in);

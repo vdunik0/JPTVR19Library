@@ -15,7 +15,7 @@ import tools.savers.UserSaver;
 
 /**
  *
- * @author Melnikov
+ * @author pupil
  */
 public class SecureManager {
     

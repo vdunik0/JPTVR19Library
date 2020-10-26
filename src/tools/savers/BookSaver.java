@@ -16,7 +16,7 @@ import java.io.ObjectOutputStream;
 
 /**
  *
- * @author Melnikov
+ * @author pupil
  */
 public class BookSaver {
 

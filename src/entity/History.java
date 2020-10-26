@@ -10,7 +10,7 @@ import java.util.Date;
 
 /**
  *
- * @author Melnikov
+ * @author pupil
  */
 public class History implements Serializable{
     private Book book;

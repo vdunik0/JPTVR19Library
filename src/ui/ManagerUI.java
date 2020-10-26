@@ -21,7 +21,7 @@ import tools.savers.UserSaver;
 
 /**
  *
- * @author Melnikov
+ * @author pupil
  */
 public class ManagerUI {
     private BookManager bookManager = new BookManager();

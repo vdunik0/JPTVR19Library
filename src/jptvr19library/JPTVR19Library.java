@@ -7,7 +7,7 @@ package jptvr19library;
 
 /**
  *
- * @author Melnikov
+ * @author pupil
  */
 public class JPTVR19Library {
 
