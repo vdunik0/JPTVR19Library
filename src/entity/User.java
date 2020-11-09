@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  *
@@ -27,7 +28,13 @@ public class User implements Serializable{
         this.reader = reader;
     }
 
-   
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     public String getLogin() {
         return login;
@@ -43,14 +50,6 @@ public class User implements Serializable{
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 
     public Reader getReader() {
@@ -71,5 +70,45 @@ public class User implements Serializable{
                 + " " + reader.getLastname()
                 + '}';
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 19 * hash + Objects.hashCode(this.login);
+        hash = 19 * hash + Objects.hashCode(this.password);
+        hash = 19 * hash + Objects.hashCode(this.role);
+        hash = 19 * hash + Objects.hashCode(this.reader);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final User other = (User) obj;
+        if (!Objects.equals(this.login, other.login)) {
+            return false;
+        }
+        if (!Objects.equals(this.password, other.password)) {
+            return false;
+        }
+        if (!Objects.equals(this.role, other.role)) {
+            return false;
+        }
+        if (!Objects.equals(this.reader, other.reader)) {
+            return false;
+        }
+        return true;
+    }
+
     
+        
+
 }

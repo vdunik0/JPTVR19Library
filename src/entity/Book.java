@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  *
@@ -15,16 +16,19 @@ public class Book implements Serializable{
     private String name;
     private String author;
     private Integer publishedYear;
-    private String isbn;
 
     public Book() {
     }
 
-    public Book(String name, String author, Integer publishedYear, String isbn) {
+    public Book(String name, String author, Integer publishedYear) {
         this.name = name;
         this.author = author;
         this.publishedYear = publishedYear;
-        this.isbn = isbn;
+    }
+    public Book(String name, String author, String publishedYear) {
+        this.name = name;
+        this.author = author;
+        setPublishedYear(publishedYear);
     }
 
     public String getName() {
@@ -50,13 +54,15 @@ public class Book implements Serializable{
     public void setPublishedYear(Integer publishedYear) {
         this.publishedYear = publishedYear;
     }
-
-    public String getIsbn() {
-        return isbn;
-    }
-
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
+    public void setPublishedYear(String publishedYear) {
+        try {
+            int publishedYearInt = Integer.parseInt(publishedYear);
+            this.publishedYear = publishedYearInt;
+            System.out.println("Строка "+publishedYear+" успешно преобразована в число.");
+        } catch (Exception e) {
+            System.out.println("Введены не цифры. Поле не изменено");
+        }
+        
     }
 
     @Override
@@ -65,10 +71,43 @@ public class Book implements Serializable{
                 + "name=" + name 
                 + ", author=" + author 
                 + ", publishedYear=" + publishedYear 
-                + ", isbn=" + isbn 
                 + '}';
     }
-    
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 97 * hash + Objects.hashCode(this.name);
+        hash = 97 * hash + Objects.hashCode(this.author);
+        hash = 97 * hash + Objects.hashCode(this.publishedYear);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Book other = (Book) obj;
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        if (!Objects.equals(this.author, other.author)) {
+            return false;
+        }
+        if (!Objects.equals(this.publishedYear, other.publishedYear)) {
+            return false;
+        }
+        return true;
+    }
+
+   
     
     
 }

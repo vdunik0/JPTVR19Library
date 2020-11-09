@@ -5,55 +5,50 @@
  */
 package tools.savers;
 
-import entity.Book;
-import entity.User;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
+import java.util.List;
 
 /**
  *
  * @author pupil
  */
-public class UserSaver {
+public class StorageManager {
 
-    public void saveUsers(User[] users) {
+    public void save(List arrayList, String fileName) {
         FileOutputStream fos = null;
         ObjectOutputStream oos = null;
         try {
-            fos = new FileOutputStream("users");
+            fos = new FileOutputStream(fileName);
             oos = new ObjectOutputStream(fos);
-            oos.writeObject(users);
+            oos.writeObject(arrayList);
             oos.flush();
         } catch (FileNotFoundException ex) {
-            System.out.println("Не найден файл");
+            System.out.println("Нет такого файла");
         } catch (IOException ex) {
             System.out.println("Ошибка ввода/вывода");
         }
     }
-
-    public User[] loadUsers() {
-        User[] users = new User[10];
+    public List load(String fileName) {
+        List arrayList = null;
         FileInputStream fis = null;
         ObjectInputStream ois = null;
         try {
-            fis = new FileInputStream("users");
+            fis = new FileInputStream(fileName);
             ois = new ObjectInputStream(fis);
-            users = (User[]) ois.readObject();
+            return (List) ois.readObject();
         } catch (FileNotFoundException ex) {
-            System.out.println("Не найден файл");
-        } catch (IOException ex) {
+            System.out.println("Нет такого файла"); 
+        } catch (IOException ex){
             System.out.println("Ошибка ввода/вывода");
         } catch (ClassNotFoundException ex) {
-            System.out.println("Не найден класс");
+            System.out.println("Нет такого класса");
         }
-        return users;
+        return arrayList;
     }
-
     
-    
-}
+}   

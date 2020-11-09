@@ -5,8 +5,11 @@
  */
 package tools.creators;
 
+import tools.savers.StorageManager;
 import entity.Book;
+import java.util.List;
 import java.util.Scanner;
+import jptvr19library.App;
 
 /**
  *
@@ -15,37 +18,49 @@ import java.util.Scanner;
 public class BookManager {
         private Scanner scanner = new Scanner(System.in);
 
-    public Book createBook() {
+public Book createBook() {
         Book book = new Book();
-        System.out.println("--- Создание книги ---");
-        System.out.print("Введите имя книги: ");
+        System.out.println("--- Добавить книгу ---");
+        System.out.println("Введите название:");
+        Scanner scanner = new Scanner(System.in);
         book.setName(scanner.nextLine());
-        System.out.print("Введите автора книги: ");
+        System.out.println("Введите автора:");
         book.setAuthor(scanner.nextLine());
-        System.out.print("Введите год издания книги: ");
-        book.setPublishedYear(scanner.nextInt());
-        scanner.nextLine();
-        System.out.print("Введите ISBN книги: ");
-        book.setIsbn(scanner.nextLine());
-        System.out.println("Создана книга: "+book.getName());
+        int numPublishedYear;
+        do{
+            System.out.println("Введите год издания:");
+            String strPublichedYear = scanner.nextLine();
+            try {
+                numPublishedYear = Integer.parseInt(strPublichedYear);
+                break;
+            } catch (Exception e) {
+                System.out.println("Вводите цифры!");
+            }
+        }while(true);
+        book.setPublishedYear(numPublishedYear);
         return book;
     }
 
-    public void addBookToArray(Book book, Book[] books) {
-        for (int i = 0; i < books.length; i++) {
-            if(books[i] == null){
-                books[i] = book;
-                break;
-            }
-        }
+    public void addBookToArray(Book book, List<Book> listBooks) {
+       listBooks.add(book);
+       StorageManager storageManager = new StorageManager();
+       storageManager.save(listBooks,App.storageFile.BOOKS.toString());
+       
     }
 
-    public void printListBooks(Book[] books) {
-        for (int i = 0; i < books.length; i++) {
-            if(books[i] != null){
-                System.out.println(i+1+". " + books[i].toString());
+    public boolean printListBooks(List<Book> listBooks) {
+        if(listBooks == null || listBooks.size() < 1){
+            System.out.println("Книг нет!");
+            return false;
+        }
+        int j = 0;
+        for (Book b : listBooks) {
+            if(b != null){
+                System.out.println(j+1+". "+b.toString());
+                j++;
             }
-        }   
+        }
+        return true;
     }
     
 }

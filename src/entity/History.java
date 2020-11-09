@@ -7,6 +7,7 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  *
@@ -15,16 +16,16 @@ import java.util.Date;
 public class History implements Serializable{
     private Book book;
     private Reader reader;
-    private Date giveOutDate;
+    private Date takeOnDate;
     private Date returnDate;
 
     public History() {
     }
 
-    public History(Book book, Reader reader, Date giveOutDate, Date returnDate) {
+    public History(Book book, Reader reader, Date takeOnDate, Date returnDate) {
         this.book = book;
         this.reader = reader;
-        this.giveOutDate = giveOutDate;
+        this.takeOnDate = takeOnDate;
         this.returnDate = returnDate;
     }
 
@@ -52,22 +53,59 @@ public class History implements Serializable{
         this.reader = reader;
     }
 
-    public Date getGiveOutDate() {
-        return giveOutDate;
+    public Date getTakeOnDate() {
+        return takeOnDate;
     }
 
-    public void setGiveOutDate(Date giveOutDate) {
-        this.giveOutDate = giveOutDate;
+    public void setTakeOnDate(Date takeOnDate) {
+        this.takeOnDate = takeOnDate;
     }
 
     @Override
     public String toString() {
         return "History{" 
                 + "book=" + book.getName()
-                + ", reader=" + reader.getLastname()
-                + ", giveOutDate=" + giveOutDate
-                + ", returnDate=" + returnDate
+                + ", reader=" + reader.getFirstname()+" "+reader.getLastname()
+                + ", takeOnDate=" + takeOnDate 
+                + ", returnDate=" + returnDate 
                 + '}';
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 37 * hash + Objects.hashCode(this.book);
+        hash = 37 * hash + Objects.hashCode(this.reader);
+        hash = 37 * hash + Objects.hashCode(this.takeOnDate);
+        hash = 37 * hash + Objects.hashCode(this.returnDate);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final History other = (History) obj;
+        if (!Objects.equals(this.book, other.book)) {
+            return false;
+        }
+        if (!Objects.equals(this.reader, other.reader)) {
+            return false;
+        }
+        if (!Objects.equals(this.takeOnDate, other.takeOnDate)) {
+            return false;
+        }
+        if (!Objects.equals(this.returnDate, other.returnDate)) {
+            return false;
+        }
+        return true;
     }
     
 }

@@ -5,57 +5,65 @@
  */
 package jptvr19library;
 
-import tools.savers.HistorySaver;
-import tools.creators.LibraryManager;
-import tools.savers.BookSaver;
 import tools.creators.ReaderManager;
 import entity.Book;
 import entity.History;
 import entity.Reader;
 import entity.User;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import security.SecureManager;
 import tools.creators.BookManager;
-import tools.savers.ReaderSaver;
-import tools.savers.UserSaver;
-import ui.ManagerUI;
-import ui.ReaderUI;
+import tools.savers.StorageManager;
+import ui.UserInterface;
 
 /**
  *
  * @author pupil
  */
 public class App {
-    private Book[] books = new Book[10];
-    private Reader[] readers = new Reader[10];
-    private History[] histories = new History[10];
-    private User[] users = new User[10];
-   
-    private BookSaver bookSaver = new BookSaver();
-    private ReaderSaver readerSaver = new ReaderSaver();
-    private HistorySaver historySaver = new HistorySaver();
-    private SecureManager secureManager = new SecureManager();
-    private UserSaver userSaver = new UserSaver();
-
-    public static User loginedUser;
+    public static enum storageFile{BOOKS, READERS, USERS, HISTORIES};
+    private List<Reader> listReaders = new ArrayList<>();
+    private List<Book> listBooks = new ArrayList<>();
+    private List<History> listHistories = new ArrayList<>();
+    private List<User> listUsers = new ArrayList<>();
+    
+    private StorageManager storageManager = new StorageManager();
+    
+    public static User loggedInUser;
     
     public App() {
-        books = bookSaver.loadBooks();
-        readers = readerSaver.loadReaders();
-        histories = historySaver.loadHistories();
-        users = userSaver.loadUsers();
-    }
-    
-    public void run(){
-        boolean repeat = true;
-        System.out.println("--- Библиотека ---");
-        this.loginedUser = secureManager.checkTask(users,readers);
-        if("MANAGER".equals(this.loginedUser.getRole())){
-            ManagerUI managerUI = new ManagerUI();
-            managerUI.getManagerUI(readers, users, books, histories);
-        }else if("READER".equals(this.loginedUser.getRole())){
-            ReaderUI readerUI = new ReaderUI();
-            readerUI.getReaderUI(readers, users, books, histories);
+        List<Reader> loadedReaders = storageManager.load(App.storageFile.READERS.toString());
+        if(loadedReaders != null){
+            listReaders = loadedReaders;
+        }
+        List<Book> loadedBooks = storageManager.load(App.storageFile.BOOKS.toString());
+        if(loadedBooks != null){
+            listBooks = loadedBooks;
+        }
+        List<History> loaderHistories = storageManager.load(App.storageFile.HISTORIES.toString());
+        if(loaderHistories != null){
+            listHistories = loaderHistories;
+        }
+        List<User> loaderUser = storageManager.load(App.storageFile.USERS.toString());
+        if(loaderUser != null){
+            listUsers = loaderUser;
         }
     }
+    public void run() {
+        System.out.println("--- Библиотека ---");
+        SecureManager secureManager = new SecureManager();
+        App.loggedInUser = secureManager.checkInLogin(listUsers,listReaders);
+        UserInterface userInterface = new UserInterface();
+        
+        if(SecureManager.role.MANAGER.toString().equals(App.loggedInUser.getRole())){
+            //публикуем интерфейс менеджера
+            userInterface.printManagerUI(listUsers, listReaders, listBooks, listHistories);
+        }else if(SecureManager.role.READER.toString().equals(App.loggedInUser.getRole())){
+            //публикуем интерфейс читателя
+            userInterface.printReaderUI(listUsers, listReaders, listBooks, listHistories);
+        }
+    }
+
 }
