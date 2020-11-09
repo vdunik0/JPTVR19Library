@@ -5,7 +5,7 @@
  */
 package tools.creators;
 
-import tools.savers.StorageManager;
+import tools.savers.SaverToFile;
 import entity.Reader;
 import java.util.List;
 import java.util.Scanner;
@@ -16,31 +16,36 @@ import jptvr19library.App;
  * @author pupil
  */
 public class ReaderManager {
-private StorageManager storageManager = new StorageManager();
+    private Scanner scanner = new Scanner(System.in);
     public Reader createReader() {
         Reader reader = new Reader();
-        System.out.println("--- Зарегистрировать читателя ---");
-        System.out.println("Введите имя:");
-        Scanner scanner = new Scanner(System.in);
+        System.out.println("--- Регистрация нового пользователя ---");
+        System.out.print("Введите имя: ");
         reader.setFirstname(scanner.nextLine());
-        System.out.println("Введите фамилию:");
+        System.out.print("Введите фамилию: ");
         reader.setLastname(scanner.nextLine());
-        System.out.println("Введите телефон:");
+        System.out.print("Введите телефон: ");
         reader.setPhone(scanner.nextLine());
+        this.printReader(reader);
         return reader;
     }
 
     public void addReaderToArray(Reader reader, List<Reader> listReaders) {
         listReaders.add(reader);
-        storageManager.save(listReaders,App.storageFile.READERS.toString());
+    }
+
+    public void printReader(Reader reader) {
+        System.out.println("Имя читателя: "
+                +reader.getFirstname()
+                +" "
+                + reader.getLastname()
+        );
     }
 
     public void printListReaders(List<Reader> listReaders) {
-        int n = 0;
-        for (Reader r : listReaders) {
-            if(r != null){
-                System.out.println(n+1+". "+r.toString());
-                n++;
+        for (int i = 0; i < listReaders.size(); i++) {
+            if(listReaders.get(i) != null){
+                System.out.println(i+1+". " + listReaders.get(i).toString());
             }
         }
     }

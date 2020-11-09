@@ -7,15 +7,25 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Objects;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 /**
  *
  * @author pupil
  */
+@Entity
 public class User implements Serializable{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String login;
     private String password;
     private String role;
+    @OneToOne
     private Reader reader;
 
     public User() {
@@ -60,6 +70,14 @@ public class User implements Serializable{
         this.reader = reader;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
         return "User{" 
@@ -70,45 +88,4 @@ public class User implements Serializable{
                 + " " + reader.getLastname()
                 + '}';
     }
-
-    @Override
-    public int hashCode() {
-        int hash = 5;
-        hash = 19 * hash + Objects.hashCode(this.login);
-        hash = 19 * hash + Objects.hashCode(this.password);
-        hash = 19 * hash + Objects.hashCode(this.role);
-        hash = 19 * hash + Objects.hashCode(this.reader);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final User other = (User) obj;
-        if (!Objects.equals(this.login, other.login)) {
-            return false;
-        }
-        if (!Objects.equals(this.password, other.password)) {
-            return false;
-        }
-        if (!Objects.equals(this.role, other.role)) {
-            return false;
-        }
-        if (!Objects.equals(this.reader, other.reader)) {
-            return false;
-        }
-        return true;
-    }
-
-    
-        
-
 }

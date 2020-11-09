@@ -8,27 +8,42 @@ package entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
 
 /**
  *
  * @author pupil
  */
+@Entity
 public class History implements Serializable{
+    @Id
+    private Long id;
+    @OneToOne
     private Book book;
+    @OneToOne
     private Reader reader;
-    private Date takeOnDate;
+    @Temporal (javax.persistence.TemporalType.TIMESTAMP)
+    private Date giveOutDate;
+    @Temporal (javax.persistence.TemporalType.TIMESTAMP)
     private Date returnDate;
 
     public History() {
     }
-
-    public History(Book book, Reader reader, Date takeOnDate, Date returnDate) {
+    
+    public History(Long id, Book book, Reader reader, Date giveOutDate, Date returnDate) {
         this.book = book;
         this.reader = reader;
-        this.takeOnDate = takeOnDate;
+        this.giveOutDate = giveOutDate;
         this.returnDate = returnDate;
     }
 
+    public History(Book book, Reader reader, Date time, Object object) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
     public Date getReturnDate() {
         return returnDate;
     }
@@ -53,12 +68,20 @@ public class History implements Serializable{
         this.reader = reader;
     }
 
-    public Date getTakeOnDate() {
-        return takeOnDate;
+    public Date getGiveOutDate() {
+        return giveOutDate;
     }
 
-    public void setTakeOnDate(Date takeOnDate) {
-        this.takeOnDate = takeOnDate;
+    public void setGiveOutDate(Date giveOutDate) {
+        this.giveOutDate = giveOutDate;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Override
@@ -66,46 +89,8 @@ public class History implements Serializable{
         return "History{" 
                 + "book=" + book.getName()
                 + ", reader=" + reader.getFirstname()+" "+reader.getLastname()
-                + ", takeOnDate=" + takeOnDate 
+                + ", takeOnDate=" + giveOutDate 
                 + ", returnDate=" + returnDate 
                 + '}';
     }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 37 * hash + Objects.hashCode(this.book);
-        hash = 37 * hash + Objects.hashCode(this.reader);
-        hash = 37 * hash + Objects.hashCode(this.takeOnDate);
-        hash = 37 * hash + Objects.hashCode(this.returnDate);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final History other = (History) obj;
-        if (!Objects.equals(this.book, other.book)) {
-            return false;
-        }
-        if (!Objects.equals(this.reader, other.reader)) {
-            return false;
-        }
-        if (!Objects.equals(this.takeOnDate, other.takeOnDate)) {
-            return false;
-        }
-        if (!Objects.equals(this.returnDate, other.returnDate)) {
-            return false;
-        }
-        return true;
-    }
-    
 }

@@ -5,6 +5,8 @@
  */
 package jptvr19library;
 
+import ui.ReaderUI;
+import ui.ManagerUI;
 import tools.creators.ReaderManager;
 import entity.Book;
 import entity.History;
@@ -15,55 +17,39 @@ import java.util.List;
 import java.util.Scanner;
 import security.SecureManager;
 import tools.creators.BookManager;
-import tools.savers.StorageManager;
-import ui.UserInterface;
+import tools.savers.SaverToFile;
 
 /**
  *
  * @author pupil
  */
 public class App {
-    public static enum storageFile{BOOKS, READERS, USERS, HISTORIES};
-    private List<Reader> listReaders = new ArrayList<>();
     private List<Book> listBooks = new ArrayList<>();
+    private List<Reader> listReaders = new ArrayList<>();
     private List<History> listHistories = new ArrayList<>();
     private List<User> listUsers = new ArrayList<>();
+    private SaverToFile saverToFile = new SaverToFile();
+    private SecureManager secureManager = new SecureManager();
     
-    private StorageManager storageManager = new StorageManager();
-    
-    public static User loggedInUser;
+    public static User loginedUser;
     
     public App() {
-        List<Reader> loadedReaders = storageManager.load(App.storageFile.READERS.toString());
-        if(loadedReaders != null){
-            listReaders = loadedReaders;
-        }
-        List<Book> loadedBooks = storageManager.load(App.storageFile.BOOKS.toString());
-        if(loadedBooks != null){
-            listBooks = loadedBooks;
-        }
-        List<History> loaderHistories = storageManager.load(App.storageFile.HISTORIES.toString());
-        if(loaderHistories != null){
-            listHistories = loaderHistories;
-        }
-        List<User> loaderUser = storageManager.load(App.storageFile.USERS.toString());
-        if(loaderUser != null){
-            listUsers = loaderUser;
-        }
+        listBooks = saverToFile.load("books");
+        listReaders = saverToFile.load("readers");
+        listHistories = saverToFile.load("histories");
+        listUsers = saverToFile.load("users");
     }
-    public void run() {
+    
+    public void run(){
+        boolean repeat = true;
         System.out.println("--- Библиотека ---");
-        SecureManager secureManager = new SecureManager();
-        App.loggedInUser = secureManager.checkInLogin(listUsers,listReaders);
-        UserInterface userInterface = new UserInterface();
-        
-        if(SecureManager.role.MANAGER.toString().equals(App.loggedInUser.getRole())){
-            //публикуем интерфейс менеджера
-            userInterface.printManagerUI(listUsers, listReaders, listBooks, listHistories);
-        }else if(SecureManager.role.READER.toString().equals(App.loggedInUser.getRole())){
-            //публикуем интерфейс читателя
-            userInterface.printReaderUI(listUsers, listReaders, listBooks, listHistories);
+        this.loginedUser = secureManager.checkTask(listUsers,listReaders);
+        if(SecureManager.role.MANAGER.toString().equals(this.loginedUser.getRole())){
+            ManagerUI managerUI = new ManagerUI();
+            managerUI.getManagerUI(listReaders, listUsers, listBooks, listHistories);
+        }else if(SecureManager.role.READER.toString().equals(this.loginedUser.getRole())){
+            ReaderUI readerUI = new ReaderUI();
+            readerUI.getReaderUI(listReaders, listUsers, listBooks, listHistories);
         }
     }
-
 }
