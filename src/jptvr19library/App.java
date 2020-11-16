@@ -26,31 +26,13 @@ import tools.savers.SaverToFile;
  * @author pupil
  */
 public class App {
-    private List<Book> listBooks = new ArrayList<>();
-    private List<Reader> listReaders = new ArrayList<>();
-    private List<History> listHistories = new ArrayList<>();
-    private List<User> listUsers = new ArrayList<>();
     private SecureManager secureManager = new SecureManager();
   //  private SaveInterface saver = new SaverToFile();
     private SaveInterface saver = new SaverToBase();
     
     public static User loginedUser;
     
-    public App(String param) {
-        if("base".equals(param)){
-            this.saver =  new SaverToBase();
-            System.out.println("Программа сохраняет в базу.");
-        }else if("file".equals(param)){
-            this.saver = new SaverToFile();
-            System.out.println("Программа сохраняет в файлы.");
-        }else{
-            this.saver =  new SaverToBase();
-            System.out.println("Программа сохраняет в базу.");
-        }
-        listBooks = saver.load("books");
-        listReaders = saver.load("readers");
-        listHistories = saver.load("histories");
-        listUsers = saver.load("users");
+    public App() {
     }
     
     public void run(){

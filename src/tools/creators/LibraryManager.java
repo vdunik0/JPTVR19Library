@@ -5,10 +5,13 @@
  */
 package tools.creators;
 
+import entity.dbcontrollers.HistoryDBController;
 import entity.Book;
 import entity.History;
 import entity.Reader;
 import entity.User;
+import entity.dbcontrollers.BookDBController;
+import entity.dbcontrollers.ReaderDBController;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -28,7 +31,7 @@ public class LibraryManager {
     private ReaderManager readerManager = new ReaderManager();
     private BookManager bookManager = new BookManager();
 
-    public History takeOnBook(List<Book> listBooks, List<Reader> listReaders) {
+    public History takeOnBook() {
         History history = new History();
         // Вывести список читателей
         // Попросить пользователя выбрать номер читателя
@@ -37,18 +40,22 @@ public class LibraryManager {
         // Инициировать history и отдать его return
         User loggedInUser = App.loginedUser;
         Reader reader = null;
+        ReaderDBController readerBController = new ReaderDBController();
+        List<Reader> listReaders = readerBController.findAll();
         if("READER".equals(loggedInUser.getRole())){
             reader = loggedInUser.getReader();
         }else if("MANAGER".equals(loggedInUser.getRole())){
             System.out.println("--- Список читателей ---");
-            readerManager.printListReaders(listReaders);
+            readerManager.printListReaders();
             System.out.print("Выберите номер читателя: ");
             int readerNumber = scanner.nextInt();
             scanner.nextLine();
             reader = listReaders.get(readerNumber-1);
         }
         history.setReader(reader);
-        bookManager.printListBooks(listBooks);
+        BookDBController bookDBController = new BookDBController();
+        List<Book> listBooks = bookDBController.findAll();
+        bookManager.printListBooks();
         System.out.print("Выберите номер книги: ");
         int bookNumber = scanner.nextInt();
         scanner.nextLine();
@@ -60,8 +67,10 @@ public class LibraryManager {
         return history;
     }
 
-    public void returnBook(List<History> listHistories) {
+    public void returnBook() {
         System.out.println("--- Список выданных книг ---");
+        HistoryDBController historyDBController = new HistoryDBController();
+        List<History> listHistories = historyDBController.findAll();
         for (int i = 0; i < listHistories.size(); i++) {
             if("MANAGER".equals(App.loginedUser.getRole())){
                 if(listHistories.get(i) != null && listHistories.get(i).getReturnDate() == null){
@@ -104,7 +113,9 @@ public class LibraryManager {
         );
     }
 
-    public void printListReadBooks(List<History> listHistories) {
+    public void printListReadBooks() {
+        HistoryDBController historyDBController = new HistoryDBController();
+        List<History> listHistories = historyDBController.findAll();
         for (int i = 0; i < listHistories.size(); i++) {
             if(listHistories.get(i) != null && listHistories.get(i).getReturnDate()==null){
                 System.out.printf("%d. Книгу \"%s\" читает %s %s%n" 

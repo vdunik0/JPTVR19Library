@@ -7,6 +7,7 @@ package tools.creators;
 
 import tools.savers.SaverToFile;
 import entity.Book;
+import entity.dbcontrollers.BookDBController;
 import java.util.List;
 import java.util.Scanner;
 import jptvr19library.App;
@@ -38,7 +39,9 @@ public class BookManager {
         listBooks.add(book);
     }
 
-    public void printListBooks(List<Book> listBooks) {
+    public void printListBooks() {
+        BookDBController bookDBController = new BookDBController();
+        List<Book> listBooks = bookDBController.findAll();
         for (int i = 0; i < listBooks.size(); i++) {
             if(listBooks.get(i) != null){
                 System.out.println(i+1+". " + listBooks.get(i).toString());

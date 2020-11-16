@@ -7,6 +7,7 @@ package tools.creators;
 
 import tools.savers.SaverToFile;
 import entity.Reader;
+import entity.dbcontrollers.ReaderDBController;
 import java.util.List;
 import java.util.Scanner;
 import jptvr19library.App;
@@ -42,7 +43,9 @@ public class ReaderManager {
         );
     }
 
-    public void printListReaders(List<Reader> listReaders) {
+    public void printListReaders() {
+        ReaderDBController readerDBController = new ReaderDBController();
+        List<Reader> listReaders = readerDBController.findAll();
         for (int i = 0; i < listReaders.size(); i++) {
             if(listReaders.get(i) != null){
                 System.out.println(i+1+". " + listReaders.get(i).toString());
