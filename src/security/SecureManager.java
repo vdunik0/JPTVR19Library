@@ -5,6 +5,7 @@
  */
 package security;
 
+import tools.savers.SaveInterface;
 import entity.Reader;
 import entity.User;
 import java.util.List;
@@ -26,7 +27,7 @@ public static enum role {
         MANAGER
 };
 
-    public User checkTask(List<User> listUsers, List<Reader> listReaders) {
+    public User checkTask(List<User> listUsers, List<Reader> listReaders, SaveInterface saver) {
         // Предоставим выбор пользователю:
         //  0. Выход из программы
         //  1. Регистрация
@@ -48,7 +49,7 @@ public static enum role {
                     System.exit(0);
                     break;
                 case "1":
-                    this.registration(listUsers,listReaders);
+                    this.registration(listUsers,listReaders, saver);
                     break;
                 case "2":
                     return this.checkInUser(listUsers);
@@ -69,15 +70,15 @@ public static enum role {
         return numTask;
     }
 
-    private void registration(List<User> listUsers, List<Reader> listReaders) {
+    private void registration(List<User> listUsers, List<Reader> listReaders, SaveInterface saver) {
         UserManager userManager = new UserManager();
         User user = userManager.createUser();
         userManager.addUserToArray(user, listUsers);
         ReaderManager readerManager = new ReaderManager();
         readerManager.addReaderToArray(user.getReader(), listReaders);
-        SaverToFile saverToFile = new SaverToFile();
-        saverToFile.save(listReaders,"readers");
-        saverToFile.save(listUsers, "users");
+       
+        saver.save(listReaders,"readers");
+        saver.save(listUsers, "users");
     }
 
     private User checkInUser(List<User> listUsers) {

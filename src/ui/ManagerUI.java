@@ -14,6 +14,7 @@ import java.util.Scanner;
 import tools.creators.BookManager;
 import tools.creators.LibraryManager;
 import tools.creators.ReaderManager;
+import tools.savers.SaveInterface;
 import tools.savers.SaverToFile;
 
 /**
@@ -24,9 +25,9 @@ public class ManagerUI {
     private BookManager bookManager = new BookManager();
     private ReaderManager readerManager = new ReaderManager();
     private LibraryManager libraryManager = new LibraryManager();
-    private SaverToFile saverToFile = new SaverToFile(); 
+   
     
-    public void getManagerUI(List<Reader> listReaders, List<User> listUsers, List<Book> listBooks, List<History> listHistories){
+    public void getManagerUI(List<Reader> listReaders, List<User> listUsers, List<Book> listBooks, List<History> listHistories, SaveInterface saver){
         boolean repeat = true;
         do{
             System.out.println("Задачи: ");
@@ -49,9 +50,9 @@ public class ManagerUI {
                 case "1":
                     System.out.println("--- Добавить новую книгу ---");
                     Book book = bookManager.createBook();
-                    book = saverToFile.saveBook(book);
+//                    book = saverToFile.saveBook(book);
                     bookManager.addBookToArray(book,listBooks);
-                    //saverToFile.save(listBooks,"books");
+                    saver.save(listBooks,"books");
                     break;
                 case "2":
                     System.out.println("--- Список книг ---");
@@ -61,7 +62,7 @@ public class ManagerUI {
                     System.out.println("--- Зарегистрировать читателя ---");
                     Reader reader = readerManager.createReader();
                     readerManager.addReaderToArray(reader,listReaders);
-                    saverToFile.save(listReaders,"readers");
+                    saver.save(listReaders,"readers");
                     break;
                 case "4":
                     System.out.println("--- Список читателей ---");
@@ -71,13 +72,13 @@ public class ManagerUI {
                     System.out.println("--- Выдать книгу читателю ---");
                     History history = libraryManager.takeOnBook(listBooks, listReaders);
                     libraryManager.addHistoryToArray(history,listHistories);
-                    saverToFile.save(listHistories,"histories");
+                    saver.save(listHistories,"histories");
                     break;
                 case "6":
                     System.out.println("--- Вернуть книгу в библиотеку ---");
                     libraryManager = new LibraryManager();
                     libraryManager.returnBook(listHistories);
-                    saverToFile.save(listHistories,"histories");
+                    saver.save(listHistories,"histories");
                     break;
                 case "7":
                     System.out.println("--- Список выданных книг ---");
