@@ -5,21 +5,20 @@
  */
 package ui;
 
-import entity.dbcontrollers.BookDBController;
+import entity.facade.BookFacade;
 import entity.Book;
 import entity.History;
 import entity.Reader;
 import entity.User;
-import entity.dbcontrollers.HistoryDBController;
-import entity.dbcontrollers.UserDBController;
+import entity.facade.HistoryFacade;
+import entity.facade.UserFacade;
 import java.util.List;
 import java.util.Scanner;
 import tools.creators.BookManager;
 import tools.creators.LibraryManager;
 import tools.creators.ReaderManager;
 import tools.creators.UserManager;
-import tools.savers.SaveInterface;
-import tools.savers.SaverToFile;
+
 
 /**
  *
@@ -30,8 +29,6 @@ public class ManagerUI {
     private ReaderManager readerManager = new ReaderManager();
     private UserManager userManager = new UserManager();
     private LibraryManager libraryManager = new LibraryManager();
-    private HistoryDBController historyDBController = new HistoryDBController();
-    private UserDBController userDBController = new UserDBController();
    
     
     public void getManagerUI(){
@@ -56,9 +53,7 @@ public class ManagerUI {
                     break;
                 case "1":
                     System.out.println("--- Добавить новую книгу ---");
-                    Book book = bookManager.createBook();
-                    BookDBController bookDBController = new BookDBController();
-                    bookDBController.create(book);
+                    Book book = bookManager.creatorBook();
                     break;
                 case "2":
                     System.out.println("--- Список книг ---");
@@ -67,7 +62,6 @@ public class ManagerUI {
                 case "3":
                     System.out.println("--- Зарегистрировать читателя ---");
                     User user = userManager.createUser();
-                    userDBController.create(user);
                     break;
                 case "4":
                     System.out.println("--- Список читателей ---");
@@ -76,13 +70,11 @@ public class ManagerUI {
                 case "5":
                     System.out.println("--- Выдать книгу читателю ---");
                     History history = libraryManager.takeOnBook();
-                    historyDBController.create(history);
                     break;
                 case "6":
                     System.out.println("--- Вернуть книгу в библиотеку ---");
                     libraryManager = new LibraryManager();
                     libraryManager.returnBook();
-                    historyDBController.create(history);
                     break;
                 case "7":
                     System.out.println("--- Список выданных книг ---");

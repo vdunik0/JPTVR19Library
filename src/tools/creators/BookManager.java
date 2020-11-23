@@ -5,9 +5,9 @@
  */
 package tools.creators;
 
-import tools.savers.SaverToFile;
+import factory.FactoryFacade;
 import entity.Book;
-import entity.dbcontrollers.BookDBController;
+import entity.facade.BookFacade;
 import java.util.List;
 import java.util.Scanner;
 import jptvr19library.App;
@@ -17,9 +17,10 @@ import jptvr19library.App;
  * @author pupil
  */
 public class BookManager {
+        private BookFacade bookFacade = FactoryFacade.getBookFacade();
         private Scanner scanner = new Scanner(System.in);
 
-    public Book createBook() {
+    public Book creatorBook() {
         Book book = new Book();
         System.out.println("--- Создание книги ---");
         System.out.print("Введите имя книги: ");
@@ -32,19 +33,15 @@ public class BookManager {
         System.out.print("Введите ISBN книги: ");
         book.setIsbn(scanner.nextLine());
         System.out.println("Создана книга: "+book.getName());
+        bookFacade.create(book);
         return book;
     }
 
-    public void addBookToArray(Book book, List<Book> listBooks) {
-        listBooks.add(book);
-    }
-
     public void printListBooks() {
-        BookDBController bookDBController = new BookDBController();
-        List<Book> listBooks = bookDBController.findAll();
+        List<Book> listBooks = bookFacade.findAll();
         for (int i = 0; i < listBooks.size(); i++) {
             if(listBooks.get(i) != null){
-                System.out.println(i+1+". " + listBooks.get(i).toString());
+                System.out.println(listBooks.get(i).getId()+". " + listBooks.get(i).toString());
             }
         }   
     }

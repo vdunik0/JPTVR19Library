@@ -9,24 +9,23 @@ import entity.Book;
 import entity.History;
 import entity.Reader;
 import entity.User;
+import entity.facade.HistoryFacade;
 import java.util.List;
 import java.util.Scanner;
 import tools.creators.BookManager;
 import tools.creators.LibraryManager;
 import tools.creators.ReaderManager;
-import tools.savers.SaveInterface;
-import tools.savers.SaverToFile;
 
 /**
  *
  * @author pupil
- */
-public class ReaderUI {
+ */    
+    public class ReaderUI {
     private BookManager bookManager = new BookManager();
     private ReaderManager readerManager = new ReaderManager();
     private LibraryManager libraryManager = new LibraryManager();
     
-    public void getReaderUI(List<Reader> listReaders,List<User> listUsers, List<Book> listBooks, List<History> listHistories, SaveInterface saver){
+    public void getReaderUI(){
         boolean repeat = true;
         do{
             System.out.println("Задачи: ");
@@ -44,19 +43,16 @@ public class ReaderUI {
                     break;
                 case "1":
                     System.out.println("--- Список книг ---");
-                    bookManager.printListBooks(listBooks);
+                    bookManager.printListBooks();
                     break;
                 case "2":
                     System.out.println("--- Выдать книгу читателю ---");
-                    History history = libraryManager.takeOnBook(listBooks, listReaders);
-                    libraryManager.addHistoryToArray(history,listHistories);
-                    saver.save(listHistories, "histories");
+                    History history = libraryManager.takeOnBook();
                     break;
                 case "3":
                     System.out.println("--- Вернуть книгу в библиотеку ---");
                     libraryManager = new LibraryManager();
-                    libraryManager.returnBook(listHistories);
-                    saver.save(listHistories,"histories");
+                    libraryManager.returnBook();
                     break;
                 default:
                     System.out.println("Нет такой задачи.");

@@ -5,9 +5,11 @@
  */
 package tools.creators;
 
+import factory.FactoryFacade;
 import entity.Reader;
 import entity.User;
-import entity.dbcontrollers.ReaderDBController;
+import entity.facade.ReaderFacade;
+import entity.facade.UserFacade;
 import java.util.List;
 import java.util.Scanner;
 import security.SecureManager;
@@ -17,13 +19,14 @@ import security.SecureManager;
  * @author pupil
  */
 public class UserManager {
+        private ReaderFacade readerFacade = FactoryFacade.getReaderFacade();
+        private UserFacade userFacade  = FactoryFacade.getUserFacade();
         private Scanner scanner = new Scanner(System.in);
 
     public User createUser() {
         ReaderManager readerManager = new ReaderManager();
         Reader reader = readerManager.createReader();
-        ReaderDBController readerDBController = new ReaderDBController();
-        readerDBController.create(reader);
+        readerFacade.create(reader);
         User user = new User();
         System.out.println("--- Создание пользователя ---");
         System.out.print("Введите логин: ");
@@ -51,18 +54,15 @@ public class UserManager {
         
         user.setRole(SecureManager.role.values()[numRole - 1].toString());
         user.setReader(reader);
+        userFacade.create(user);
         System.out.println("Пользователь создан: "+user.toString());
         return user;
-    }
-
-    public void addUserToArray(User user, List<User> listUsers) {
-        listUsers.add(user);
     }
 
     public void printListUsers(List<User> listUsers) {
         for (int i = 0; i < listUsers.size(); i++) {
             if(listUsers.get(i) != null){
-                System.out.println(i+1+". " + listUsers.get(i).toString());
+                System.out.println(listUsers.get(i).getId()+". " + listUsers.get(i).toString());
             }
         }   
     }
